@@ -1,6 +1,7 @@
 # Roaya-Career-Platform
-
+This project is part of vibe coding workshop in SDAIA academy and DAICO at @ King Saud University
 Hello! Welcome to Roaya, a website our group built to help high school students in Saudi Arabia figure out which university major suits them best. Choosing a major can be stressful, so we designed this site to act as a virtual career advisor.
+#SDAIA_ACADEMY #VIBE_CODING_WORKSHOP #DAICO #SDAIA 
 
 ## What Our Website Does
 
