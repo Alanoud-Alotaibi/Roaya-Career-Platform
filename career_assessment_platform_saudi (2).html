@@ -1,0 +1,1340 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --primary:#1a5276;--primary-light:#2980b9;--primary-dark:#0d2d45;
+  --accent:#f39c12;--accent-light:#fad7a0;
+  --success:#27ae60;--danger:#e74c3c;--warning:#f39c12;
+  --bg:#f0f4f8;--card:#fff;--border:#d5dce6;
+  --text:#1a2332;--text2:#4a6080;--text3:#8899aa;
+  --radius:14px;--shadow:0 2px 12px rgba(0,0,0,.08);
+  --font:'IBM Plex Sans Arabic',sans-serif;
+}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;direction:rtl}
+.screen{display:none;min-height:100vh;animation:fadeIn .3s ease}
+.screen.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ===== HEADER ===== */
+.header{background:linear-gradient(135deg,var(--primary-dark) 0%,var(--primary) 60%,var(--primary-light) 100%);padding:1.5rem 2rem;display:flex;align-items:center;gap:1rem;position:sticky;top:0;z-index:100}
+.logo{width:44px;height:44px;background:rgba(255,255,255,.15);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;border:1px solid rgba(255,255,255,.25)}
+.logo-text h1{color:#fff;font-size:1.4rem;font-weight:700;margin:0}
+.logo-text p{color:rgba(255,255,255,.7);font-size:.8rem;margin:0}
+.header-badge{margin-right:auto;background:var(--accent);color:#fff;padding:.3rem .9rem;border-radius:20px;font-size:.78rem;font-weight:600}
+
+/* ===== HERO ===== */
+.hero{background:linear-gradient(135deg,var(--primary-dark) 0%,var(--primary) 60%,var(--primary-light) 100%);padding:4rem 2rem 5rem;text-align:center;color:#fff;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='28'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");pointer-events:none}
+.hero h1{font-size:2.5rem;font-weight:700;margin-bottom:.75rem;position:relative}
+.hero h1 span{color:var(--accent)}
+.hero p{font-size:1.1rem;opacity:.85;max-width:560px;margin:0 auto 2rem;position:relative;line-height:1.7}
+.hero-stats{display:flex;gap:2rem;justify-content:center;margin-top:2rem;position:relative}
+.hero-stat{text-align:center}
+.hero-stat .num{font-size:2rem;font-weight:700;color:var(--accent)}
+.hero-stat .lbl{font-size:.8rem;opacity:.75}
+
+/* ===== BUTTONS ===== */
+.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.75rem 1.75rem;border:none;border-radius:10px;font-family:var(--font);font-size:.95rem;font-weight:600;cursor:pointer;transition:all .2s;text-decoration:none}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:#e67e22;transform:translateY(-1px);box-shadow:0 4px 16px rgba(243,156,18,.4)}
+.btn-secondary{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3)}
+.btn-secondary:hover{background:rgba(255,255,255,.25)}
+.btn-outline{background:#fff;color:var(--primary);border:1.5px solid var(--primary)}
+.btn-outline:hover{background:var(--primary);color:#fff}
+.btn-sm{padding:.5rem 1.1rem;font-size:.85rem}
+.btn-lg{padding:1rem 2.5rem;font-size:1.05rem}
+
+/* ===== CARDS ===== */
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--border);padding:1.5rem}
+.card-grid{display:grid;gap:1rem}
+.card-grid-2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.card-grid-3{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.card-grid-4{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+
+/* ===== PROFILE FORM ===== */
+.form-section{max-width:700px;margin:2rem auto;padding:0 1.5rem 4rem}
+.form-section h2{font-size:1.5rem;font-weight:700;margin-bottom:1.5rem;color:var(--primary)}
+.form-group{margin-bottom:1.25rem}
+.form-group label{display:block;font-size:.9rem;font-weight:600;color:var(--text);margin-bottom:.4rem}
+.form-group input,.form-group select{width:100%;padding:.7rem 1rem;border:1.5px solid var(--border);border-radius:10px;font-family:var(--font);font-size:.95rem;color:var(--text);background:#fff;transition:border-color .2s;outline:none}
+.form-group input:focus,.form-group select:focus{border-color:var(--primary-light)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.6rem;margin-top:.5rem}
+.form-option{border:1.5px solid var(--border);border-radius:10px;padding:.7rem;cursor:pointer;transition:all .2s;text-align:center;font-size:.85rem;display:flex;flex-direction:column;align-items:center;gap:.3rem}
+.form-option.active{border-color:var(--primary-light);background:#e8f4fd;color:var(--primary)}
+.form-option .opt-icon{font-size:1.4rem}
+.step-header{text-align:center;padding:2rem 1.5rem 1rem;background:var(--primary);color:#fff;margin-bottom:0}
+.step-header h2{font-size:1.4rem;font-weight:700}
+.step-header p{opacity:.8;font-size:.9rem;margin-top:.3rem}
+
+/* ===== ASSESSMENT ===== */
+.assessment-wrap{max-width:680px;margin:0 auto;padding:1.5rem}
+.progress-bar{background:#e0e8f0;border-radius:20px;height:8px;margin-bottom:1.5rem}
+.progress-fill{background:linear-gradient(90deg,var(--primary-light),var(--accent));height:8px;border-radius:20px;transition:width .4s ease}
+.q-counter{font-size:.85rem;color:var(--text2);margin-bottom:.5rem;text-align:center}
+.q-section-label{display:inline-block;background:var(--accent-light);color:#8b5e00;padding:.3rem .9rem;border-radius:20px;font-size:.8rem;font-weight:600;margin-bottom:.75rem}
+.question-card{background:#fff;border-radius:var(--radius);padding:1.75rem;box-shadow:var(--shadow);border:1px solid var(--border)}
+.question-text{font-size:1.15rem;font-weight:600;color:var(--primary-dark);margin-bottom:1.25rem;line-height:1.5}
+.answer-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.answer-opt{border:1.5px solid var(--border);border-radius:12px;padding:.9rem 1rem;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:.75rem;font-size:.9rem}
+.answer-opt:hover{border-color:var(--primary-light);background:#f0f7ff}
+.answer-opt.selected{border-color:var(--primary);background:#e8f4fd;color:var(--primary);font-weight:600}
+.answer-opt .opt-em{font-size:1.4rem;flex-shrink:0}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.25rem}
+
+/* ===== RESULTS ===== */
+.results-wrap{max-width:860px;margin:0 auto;padding:1.5rem 1.5rem 4rem}
+.result-hero{background:linear-gradient(135deg,var(--primary-dark),var(--primary-light));border-radius:var(--radius);padding:2rem;color:#fff;text-align:center;margin-bottom:1.5rem;position:relative;overflow:hidden}
+.result-hero h2{font-size:1.5rem;font-weight:700;margin-bottom:.5rem}
+.fit-score-ring{width:120px;height:120px;margin:1rem auto;position:relative}
+.fit-score-ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.fit-score-ring .score-text{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:1.8rem;font-weight:700;color:#fff}
+.fit-score-ring .score-label{font-size:.75rem;opacity:.8;margin-top:2px}
+
+.tabs{display:flex;gap:.5rem;background:#fff;border-radius:12px;padding:.4rem;border:1px solid var(--border);margin-bottom:1.25rem;overflow-x:auto}
+.tab{padding:.5rem 1rem;border-radius:8px;font-size:.88rem;font-weight:600;cursor:pointer;white-space:nowrap;color:var(--text2);transition:all .2s}
+.tab.active{background:var(--primary);color:#fff}
+
+.major-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-bottom:1rem;display:flex;flex-direction:column;gap:.75rem}
+.major-rank{width:32px;height:32px;background:var(--primary);color:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;flex-shrink:0}
+.major-rank.gold{background:#f39c12}
+.major-rank.silver{background:#95a5a6}
+.major-rank.bronze{background:#cd7f32}
+.major-top{display:flex;align-items:flex-start;gap:.75rem}
+.major-info h3{font-size:1.1rem;font-weight:700;color:var(--primary-dark);margin-bottom:.2rem}
+.major-info .major-cat{font-size:.8rem;color:var(--text3);background:var(--bg);padding:.2rem .7rem;border-radius:20px;display:inline-block}
+.match-badge{margin-right:auto;text-align:center;background:#e8f8f0;color:#1a7a45;padding:.3rem .8rem;border-radius:20px;font-weight:700;font-size:1.05rem;white-space:nowrap}
+.match-bar{background:#e8f0f8;border-radius:4px;height:6px;overflow:hidden}
+.match-fill{background:linear-gradient(90deg,var(--primary-light),var(--accent));height:6px;border-radius:4px;transition:width .6s ease}
+.major-tags{display:flex;flex-wrap:wrap;gap:.4rem}
+.tag{background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:.2rem .7rem;font-size:.78rem;color:var(--text2)}
+.tag.green{background:#e8f8f0;border-color:#a3dfc0;color:#1a7a45}
+.tag.blue{background:#e8f4fd;border-color:#a3cce9;color:#1a5276}
+.tag.orange{background:#fef9e7;border-color:#f9e4b7;color:#7d5a00}
+.major-expand{background:none;border:none;color:var(--primary-light);font-family:var(--font);font-size:.85rem;cursor:pointer;padding:0;font-weight:600;text-align:right}
+.major-details{background:var(--bg);border-radius:10px;padding:1rem;margin-top:.25rem;display:none}
+.major-details.open{display:block}
+.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-bottom:.75rem}
+.detail-item{display:flex;flex-direction:column;gap:.15rem}
+.detail-item .di-label{font-size:.78rem;color:var(--text3);font-weight:600}
+.detail-item .di-val{font-size:.9rem;font-weight:600;color:var(--text)}
+.uni-list{margin-top:.5rem}
+.uni-item{background:#fff;border:1px solid var(--border);border-radius:8px;padding:.75rem 1rem;margin-bottom:.4rem;display:flex;align-items:center;gap:.75rem}
+.uni-logo{width:36px;height:36px;border-radius:8px;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0;text-align:center;line-height:1.2}
+.uni-info{flex:1}
+.uni-info .uni-name{font-weight:700;font-size:.9rem;color:var(--primary-dark)}
+.uni-info .uni-sub{font-size:.78rem;color:var(--text2)}
+.uni-badge{font-size:.75rem;background:#e8f4fd;color:var(--primary);padding:.2rem .6rem;border-radius:20px;font-weight:600}
+
+.personality-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.personality-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.2rem;text-align:center}
+.personality-card .p-icon{font-size:2rem;margin-bottom:.5rem}
+.personality-card .p-title{font-weight:700;color:var(--primary-dark);margin-bottom:.3rem}
+.personality-card .p-desc{font-size:.82rem;color:var(--text2);line-height:1.5}
+
+.skills-chart{background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.2rem}
+.skill-bar-row{display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem}
+.skill-bar-row .sk-label{font-size:.85rem;font-weight:600;color:var(--text);min-width:120px;text-align:right}
+.skill-bar-row .sk-track{flex:1;background:#e8f0f8;border-radius:4px;height:10px}
+.skill-bar-row .sk-fill{background:linear-gradient(90deg,var(--primary-light),var(--primary));height:10px;border-radius:4px}
+.skill-bar-row .sk-val{font-size:.8rem;font-weight:700;color:var(--primary);min-width:36px;text-align:left}
+
+/* ===== CHAT ===== */
+.chat-wrap{max-width:680px;margin:0 auto;padding:1.5rem;height:calc(100vh - 200px);display:flex;flex-direction:column}
+.chat-messages{flex:1;overflow-y:auto;padding:.5rem;display:flex;flex-direction:column;gap:.75rem}
+.msg{max-width:80%;padding:.85rem 1.1rem;border-radius:16px;line-height:1.6;font-size:.9rem}
+.msg.bot{background:#fff;border:1px solid var(--border);align-self:flex-start;border-radius:4px 16px 16px 16px}
+.msg.user{background:var(--primary);color:#fff;align-self:flex-end;border-radius:16px 4px 16px 16px}
+.msg.bot .msg-icon{font-size:1rem;margin-left:.4rem}
+.chat-input-row{display:flex;gap:.6rem;margin-top:.75rem}
+.chat-input-row input{flex:1;padding:.7rem 1rem;border:1.5px solid var(--border);border-radius:10px;font-family:var(--font);font-size:.9rem;outline:none}
+.chat-input-row input:focus{border-color:var(--primary-light)}
+.chat-suggestions{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.75rem}
+.chat-sugg{border:1px solid var(--primary-light);color:var(--primary);background:#f0f7ff;border-radius:20px;padding:.3rem .9rem;font-size:.8rem;cursor:pointer;font-family:var(--font)}
+.chat-sugg:hover{background:var(--primary);color:#fff}
+
+/* ===== ROADMAP ===== */
+.roadmap-wrap{max-width:760px;margin:0 auto;padding:1.5rem}
+.roadmap-step{display:flex;gap:1rem;margin-bottom:0;position:relative}
+.roadmap-step::after{content:'';position:absolute;right:19px;top:48px;bottom:-8px;width:2px;background:var(--border)}
+.roadmap-step:last-child::after{display:none}
+.rs-number{width:40px;height:40px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;font-size:.9rem;margin-bottom:16px}
+.rs-content{flex:1;background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.1rem;margin-bottom:1rem}
+.rs-content h4{font-weight:700;color:var(--primary-dark);margin-bottom:.3rem}
+.rs-content p{font-size:.85rem;color:var(--text2);line-height:1.5}
+.rs-content .rs-timeline{font-size:.78rem;color:var(--accent);font-weight:700;margin-top:.4rem}
+
+/* ===== NAV ===== */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);display:flex;justify-content:space-around;padding:.75rem .5rem;z-index:100;display:none}
+.bottom-nav.visible{display:flex}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:.2rem;font-size:.7rem;color:var(--text3);cursor:pointer;padding:.3rem .6rem;border-radius:8px;transition:all .2s;min-width:52px}
+.nav-item.active,.nav-item:hover{color:var(--primary)}
+.nav-item .nav-icon{font-size:1.3rem}
+
+/* ===== LOADING ===== */
+.loading-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:50vh;gap:1rem}
+.spinner{width:48px;height:48px;border:4px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ===== MISC ===== */
+.section-title{font-size:1.25rem;font-weight:700;color:var(--primary-dark);margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
+.section-title::before{content:'';display:block;width:4px;height:20px;background:var(--accent);border-radius:2px}
+.alert{border-radius:10px;padding:.9rem 1.1rem;margin-bottom:1rem;font-size:.9rem}
+.alert-info{background:#e8f4fd;border:1px solid #a3cce9;color:#1a5276}
+.divider{height:1px;background:var(--border);margin:1.5rem 0}
+.text-center{text-align:center}
+.mt-1{margin-top:.5rem}.mt-2{margin-top:1rem}.mt-3{margin-top:1.5rem}
+.text-muted{color:var(--text2);font-size:.85rem}
+.chip{display:inline-flex;align-items:center;gap:.35rem;background:var(--bg);border:1px solid var(--border);border-radius:20px;padding:.25rem .8rem;font-size:.8rem;color:var(--text2)}
+.chip.gold{background:#fef9e7;border-color:#f9e4b7;color:#7d5a00}
+</style>
+</head>
+<body>
+
+<!-- SCREEN 1: WELCOME -->
+<div id="screen-welcome" class="screen active">
+  <div class="hero">
+    <div style="font-size:3rem;margin-bottom:1rem">🧭</div>
+    <h1>منصة <span>رُؤية</span> <br>للإرشاد المهني</h1>
+    <p>اكتشف التخصص الجامعي الأمثل لك بالذكاء الاصطناعي — مصمم خصيصاً للطالب السعودي</p>
+    <button class="btn btn-primary btn-lg" onclick="showScreen('screen-profile')">
+      ابدأ رحلتك الآن ←
+    </button>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num">100+</div><div class="lbl">تخصص جامعي</div></div>
+      <div class="hero-stat"><div class="num">30+</div><div class="lbl">جامعة سعودية</div></div>
+      <div class="hero-stat"><div class="num">20</div><div class="lbl">سؤال دقيق</div></div>
+    </div>
+  </div>
+  <div style="padding:2rem 1.5rem;max-width:860px;margin:0 auto">
+    <div class="section-title">كيف تعمل المنصة؟</div>
+    <div class="card-grid card-grid-3">
+      <div class="card" style="text-align:center">
+        <div style="font-size:2.2rem;margin-bottom:.75rem">📝</div>
+        <h3 style="font-weight:700;margin-bottom:.4rem;color:var(--primary-dark)">أملأ ملفك الشخصي</h3>
+        <p class="text-muted">أدخل بياناتك الأكاديمية والشخصية لتخصيص التوصيات</p>
+      </div>
+      <div class="card" style="text-align:center">
+        <div style="font-size:2.2rem;margin-bottom:.75rem">🧠</div>
+        <h3 style="font-weight:700;margin-bottom:.4rem;color:var(--primary-dark)">أجب على 20 سؤالاً</h3>
+        <p class="text-muted">أسئلة شاملة تقيس اهتماماتك ومهاراتك وقيمك المهنية</p>
+      </div>
+      <div class="card" style="text-align:center">
+        <div style="font-size:2.2rem;margin-bottom:.75rem">🎯</div>
+        <h3 style="font-weight:700;margin-bottom:.4rem;color:var(--primary-dark)">احصل على توصياتك</h3>
+        <p class="text-muted">تحليل AI شامل لأفضل 10 تخصصات مع الجامعات المناسبة</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN 2: PROFILE -->
+<div id="screen-profile" class="screen">
+  <div class="header">
+    <div class="logo">🧭</div>
+    <div class="logo-text"><h1>رُؤية</h1><p>الملف الشخصي</p></div>
+    <div class="header-badge">الخطوة 1 من 3</div>
+  </div>
+  <div class="form-section">
+    <div class="alert alert-info">
+      📌 البيانات الشخصية تساعد الذكاء الاصطناعي على تقديم توصيات دقيقة مناسبة لك
+    </div>
+    <h2>بياناتك الشخصية</h2>
+    <div class="form-row">
+      <div class="form-group">
+        <label>الاسم (اختياري)</label>
+        <input type="text" id="p-name" placeholder="اسمك الكريم">
+      </div>
+      <div class="form-group">
+        <label>العمر</label>
+        <input type="number" id="p-age" placeholder="16" min="14" max="20">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>الجنس ✱</label>
+      <div class="form-options">
+        <div class="form-option" onclick="selectOpt(this,'gender','male')" data-field="gender" data-val="male">
+          <div class="opt-icon">👨‍🎓</div><span>ذكر</span>
+        </div>
+        <div class="form-option" onclick="selectOpt(this,'gender','female')" data-field="gender" data-val="female">
+          <div class="opt-icon">👩‍🎓</div><span>أنثى</span>
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>الصف الدراسي ✱</label>
+        <select id="p-grade">
+          <option value="">اختر الصف</option>
+          <option value="10">الصف العاشر</option>
+          <option value="11">الصف الحادي عشر</option>
+          <option value="12">الصف الثاني عشر</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>المدينة</label>
+        <select id="p-city">
+          <option value="">اختر مدينتك</option>
+          <option>الرياض</option><option>جدة</option><option>مكة المكرمة</option>
+          <option>المدينة المنورة</option><option>الدمام</option><option>الخبر</option>
+          <option>الأحساء</option><option>أبها</option><option>تبوك</option><option>أخرى</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>المسار الدراسي ✱</label>
+      <div class="form-options">
+        <div class="form-option" onclick="selectOpt(this,'track','general')" data-field="track" data-val="general"><div class="opt-icon">📚</div><span>عام</span></div>
+        <div class="form-option" onclick="selectOpt(this,'track','engineering')" data-field="track" data-val="engineering"><div class="opt-icon">⚙️</div><span>هندسة</span></div>
+        <div class="form-option" onclick="selectOpt(this,'track','health')" data-field="track" data-val="health"><div class="opt-icon">🏥</div><span>صحة وأحياء</span></div>
+        <div class="form-option" onclick="selectOpt(this,'track','cs')" data-field="track" data-val="cs"><div class="opt-icon">💻</div><span>حاسب</span></div>
+        <div class="form-option" onclick="selectOpt(this,'track','business')" data-field="track" data-val="business"><div class="opt-icon">📊</div><span>أعمال</span></div>
+        <div class="form-option" onclick="selectOpt(this,'track','humanities')" data-field="track" data-val="humanities"><div class="opt-icon">📜</div><span>أدبي ولغات</span></div>
+        <div class="form-option" onclick="selectOpt(this,'track','other')" data-field="track" data-val="other"><div class="opt-icon">🎯</div><span>أخرى</span></div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>اللغة المفضلة</label>
+      <div class="form-options">
+        <div class="form-option active" onclick="selectOpt(this,'lang','ar')" data-field="lang" data-val="ar"><div class="opt-icon">🇸🇦</div><span>العربية</span></div>
+        <div class="form-option" onclick="selectOpt(this,'lang','en')" data-field="lang" data-val="en"><div class="opt-icon">🇺🇸</div><span>الإنجليزية</span></div>
+      </div>
+    </div>
+    <button class="btn btn-primary btn-lg" style="width:100%;justify-content:center;margin-top:1rem" onclick="startAssessment()">
+      ابدأ التقييم ←
+    </button>
+  </div>
+</div>
+
+<!-- SCREEN 3: ASSESSMENT -->
+<div id="screen-assessment" class="screen">
+  <div class="header">
+    <div class="logo">🧭</div>
+    <div class="logo-text"><h1>رُؤية</h1><p>تقييم المهني</p></div>
+    <div class="header-badge" id="q-badge">الخطوة 2 من 3</div>
+  </div>
+  <div class="assessment-wrap">
+    <div class="q-counter" id="q-counter">السؤال 1 من 20</div>
+    <div class="progress-bar"><div class="progress-fill" id="q-progress" style="width:5%"></div></div>
+    <div id="q-section-label" class="q-section-label">القسم 1 — الاهتمامات</div>
+    <div class="question-card">
+      <div class="question-text" id="q-text">ما الأنشطة التي تستمتع بها أكثر؟</div>
+      <div class="answer-grid" id="q-answers"></div>
+    </div>
+    <div class="q-nav">
+      <button class="btn btn-outline btn-sm" onclick="prevQ()" id="btn-prev" style="display:none">← السابق</button>
+      <div style="font-size:.8rem;color:var(--text3)" id="q-hint">اختر إجابة واحدة</div>
+      <button class="btn btn-primary btn-sm" onclick="nextQ()" id="btn-next" disabled>التالي →</button>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN 4: ANALYZING -->
+<div id="screen-analyzing" class="screen">
+  <div class="loading-screen">
+    <div style="font-size:3.5rem">🤖</div>
+    <div class="spinner"></div>
+    <h3 style="color:var(--primary-dark);font-size:1.3rem">يحلل الذكاء الاصطناعي إجاباتك...</h3>
+    <p class="text-muted" id="analyzing-text">جاري تحليل اهتماماتك ومهاراتك...</p>
+    <div style="max-width:400px;width:100%;background:#e0e8f0;border-radius:20px;height:8px;margin-top:.5rem">
+      <div id="analyze-bar" style="background:linear-gradient(90deg,var(--primary-light),var(--accent));height:8px;border-radius:20px;width:0%;transition:width .5s ease"></div>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN 5: RESULTS -->
+<div id="screen-results" class="screen">
+  <div class="header">
+    <div class="logo">🧭</div>
+    <div class="logo-text"><h1 id="result-name-h">نتائجك</h1><p>تحليل مهني شامل</p></div>
+    <div style="margin-right:auto;display:flex;gap:.5rem">
+      <button class="btn btn-secondary btn-sm" onclick="printResults()">🖨️ حفظ / طباعة</button>
+      <button class="btn btn-secondary btn-sm" onclick="showScreen('screen-welcome')">بدء من جديد</button>
+    </div>
+  </div>
+  <div class="results-wrap">
+    <!-- Hero score -->
+    <div class="result-hero">
+      <h2>🎉 تحليلك المهني جاهز!</h2>
+      <p style="opacity:.8;font-size:.9rem;margin-bottom:1rem">بناءً على 20 إجابة وملفك الشخصي</p>
+      <div class="fit-score-ring">
+        <svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="10"/><circle id="score-circle" cx="60" cy="60" r="52" fill="none" stroke="#f39c12" stroke-width="10" stroke-linecap="round" stroke-dasharray="327" stroke-dashoffset="327"/></svg>
+        <div class="score-text"><span id="fit-score-text">0%</span><span class="score-label">توافق مهني</span></div>
+      </div>
+      <div id="profile-summary" style="margin-top:.75rem;font-size:.9rem;opacity:.85"></div>
+      <div style="margin-top:.85rem;font-size:.78rem;opacity:.7;max-width:480px;margin-inline:auto;line-height:1.6">
+        ℹ️ نسبة التوافق محسوبة مباشرة من إجاباتك على الأسئلة العشرين، وليست ثابتة أو عشوائية — كل طالب يحصل على نتيجة مختلفة حسب إجاباته فعلياً.
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <div class="tab active" onclick="showTab('tab-majors',this)">🎯 التخصصات</div>
+      <div class="tab" onclick="showTab('tab-personality',this)">🧠 شخصيتك</div>
+      <div class="tab" onclick="showTab('tab-skills',this)">📊 مهاراتك</div>
+      <div class="tab" onclick="showTab('tab-roadmap',this)">🗺️ الخارطة</div>
+      <div class="tab" onclick="showTab('tab-chat',this)">💬 المستشار</div>
+    </div>
+
+    <!-- TAB: Majors -->
+    <div id="tab-majors" class="tab-content">
+      <div class="section-title">أفضل 10 تخصصات لك</div>
+      <div id="majors-list"></div>
+    </div>
+
+    <!-- TAB: Personality -->
+    <div id="tab-personality" class="tab-content" style="display:none">
+      <div class="section-title">ملفك الشخصي</div>
+      <div class="personality-grid" id="personality-cards"></div>
+      <div class="divider"></div>
+      <div class="section-title">مخطط اهتماماتك</div>
+      <div class="card">
+        <div style="position:relative;height:280px">
+          <canvas id="radarChart" role="img" aria-label="مخطط الاهتمامات">تقييم مهاراتك واهتماماتك</canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: Skills -->
+    <div id="tab-skills" class="tab-content" style="display:none">
+      <div class="section-title">تحليل مهاراتك</div>
+      <div class="skills-chart" id="skills-analysis"></div>
+    </div>
+
+    <!-- TAB: Roadmap -->
+    <div id="tab-roadmap" class="tab-content" style="display:none">
+      <div class="section-title">خارطة مسارك المهني</div>
+      <div id="roadmap-content"></div>
+    </div>
+
+    <!-- TAB: Chat -->
+    <div id="tab-chat" class="tab-content" style="display:none">
+      <div class="chat-suggestions" id="chat-suggestions"></div>
+      <div class="chat-messages" id="chat-messages">
+        <div class="msg bot">👋 مرحباً! أنا مستشارك المهني الذكي. اسألني عن أي تخصص، جامعة، أو مسار مهني في السعودية.</div>
+      </div>
+      <div class="chat-input-row">
+        <input type="text" id="chat-input" placeholder="اكتب سؤالك هنا..." onkeydown="if(event.key==='Enter')sendChat()">
+        <button class="btn btn-primary" onclick="sendChat()">إرسال</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ======= STATE =======
+let profile = {name:'',gender:'',grade:'',age:'',city:'',track:'',lang:'ar'};
+let answers = [];
+let currentQ = 0;
+let results = null;
+let currentTraits = null;
+
+// ======= QUESTIONS =======
+const QUESTIONS = [
+  {section:'القسم 1 — الاهتمامات',text:'ما الأنشطة التي تستمتع بها أكثر؟',opts:[
+    {em:'🎨',text:'الرسم والتصميم والإبداع'},
+    {em:'🔬',text:'التجارب العلمية والأبحاث'},
+    {em:'💻',text:'البرمجة وتطوير التطبيقات'},
+    {em:'📖',text:'القراءة والكتابة والتعبير'}
+  ],key:'activity'},
+  {section:'القسم 1 — الاهتمامات',text:'ما المواد الدراسية التي تُحبها أكثر؟',opts:[
+    {em:'🧮',text:'الرياضيات والفيزياء'},
+    {em:'🧬',text:'الأحياء والكيمياء'},
+    {em:'📝',text:'اللغة العربية والتاريخ'},
+    {em:'🌍',text:'الجغرافيا والعلوم الاجتماعية'}
+  ],key:'subject'},
+  {section:'القسم 1 — الاهتمامات',text:'ما نوع المشاريع التي تُثير اهتمامك؟',opts:[
+    {em:'🏗️',text:'بناء وتصميم أشياء جديدة'},
+    {em:'📊',text:'تحليل البيانات وحل مشكلات'},
+    {em:'🤝',text:'مساعدة الناس وتنمية المجتمع'},
+    {em:'💡',text:'الاختراع والابتكار التقني'}
+  ],key:'project'},
+  {section:'القسم 2 — الشخصية',text:'هل تستمتع بقيادة الفرق؟',opts:[
+    {em:'🦁',text:'نعم، أحب أن أكون قائداً دائماً'},
+    {em:'🤝',text:'أفضل القيادة أحياناً'},
+    {em:'🌱',text:'أفضل أن أكون عضواً في الفريق'},
+    {em:'🦅',text:'أعمل بشكل أفضل بشكل مستقل'}
+  ],key:'leadership'},
+  {section:'القسم 2 — الشخصية',text:'هل تفضل العمل منفرداً أم مع فريق؟',opts:[
+    {em:'👤',text:'منفرداً تماماً'},
+    {em:'👥',text:'مع فريق صغير'},
+    {em:'🏢',text:'في بيئة تعاون واسعة'},
+    {em:'⚖️',text:'يتفاوت حسب المهمة'}
+  ],key:'teamwork'},
+  {section:'القسم 2 — الشخصية',text:'هل أنت أكثر إبداعاً أم تحليلياً؟',opts:[
+    {em:'🎭',text:'إبداعي بشكل كبير'},
+    {em:'🔢',text:'تحليلي وعلمي'},
+    {em:'🌀',text:'مزيج من الاثنين'},
+    {em:'💼',text:'عملي وتنظيمي'}
+  ],key:'creative'},
+  {section:'القسم 2 — الشخصية',text:'هل تستمتع بحل المشكلات الصعبة؟',opts:[
+    {em:'🔥',text:'نعم! أحب التحديات الصعبة'},
+    {em:'✅',text:'أفضل المهام الواضحة'},
+    {em:'📐',text:'أحل المشكلات بمنهجية'},
+    {em:'💭',text:'أحتاج وقتاً للتفكير أولاً'}
+  ],key:'problem'},
+  {section:'القسم 3 — المهارات',text:'كيف تقيّم مهاراتك في الرياضيات؟',opts:[
+    {em:'🏆',text:'ممتاز — أعشق الرياضيات'},
+    {em:'👍',text:'جيد — مقبول جداً'},
+    {em:'➖',text:'متوسط — لا بأس'},
+    {em:'😅',text:'ضعيف — ليست قوتي'}
+  ],key:'math'},
+  {section:'القسم 3 — المهارات',text:'كيف مهاراتك في التواصل والتعبير؟',opts:[
+    {em:'🎤',text:'ممتاز — أُحب التحدث أمام الجمهور'},
+    {em:'✍️',text:'جيد في الكتابة أكثر من الكلام'},
+    {em:'👂',text:'مستمع جيد أكثر من متحدث'},
+    {em:'🔕',text:'أفضل التواصل الكتابي المختصر'}
+  ],key:'comm'},
+  {section:'القسم 3 — المهارات',text:'ما مستوى راحتك مع التكنولوجيا؟',opts:[
+    {em:'⚡',text:'خبير — أتعلم أي تقنية بسرعة'},
+    {em:'💻',text:'مرتاح جداً مع الحاسب'},
+    {em:'📱',text:'أستخدم الهاتف والتطبيقات فقط'},
+    {em:'📚',text:'أفضل الأساليب التقليدية'}
+  ],key:'tech'},
+  {section:'القسم 4 — تفضيلات العمل',text:'هل تفضل العمل داخل المكتب أم في الميدان؟',opts:[
+    {em:'🏢',text:'مكتب مريح دائماً'},
+    {em:'🌿',text:'عمل ميداني وخارجي'},
+    {em:'🔄',text:'مزيج من الاثنين'},
+    {em:'🏠',text:'عن بُعد من المنزل'}
+  ],key:'environ'},
+  {section:'القسم 4 — تفضيلات العمل',text:'هل تستمتع بمساعدة الناس مباشرة؟',opts:[
+    {em:'❤️',text:'نعم! هذا هو هدفي الأساسي'},
+    {em:'🌍',text:'أفضل المساعدة عبر أعمالي'},
+    {em:'🔬',text:'أساهم من خلال الأبحاث'},
+    {em:'💰',text:'أفضل الأعمال التجارية'}
+  ],key:'helping'},
+  {section:'القسم 4 — تفضيلات العمل',text:'هل تريد إنشاء منتجات أم إدارة مشاريع؟',opts:[
+    {em:'🛠️',text:'إنشاء وبناء الأشياء'},
+    {em:'📋',text:'تنظيم وإدارة المشاريع'},
+    {em:'💡',text:'الاختراع والتطوير'},
+    {em:'📈',text:'قيادة المؤسسات'}
+  ],key:'role'},
+  {section:'القسم 5 — قيم مهنية',text:'ما الأهم بالنسبة لك في عملك المستقبلي؟',opts:[
+    {em:'💰',text:'الراتب المرتفع والعوائد'},
+    {em:'🎨',text:'الإبداع والحرية في العمل'},
+    {em:'🛡️',text:'الاستقرار والأمان الوظيفي'},
+    {em:'🌟',text:'الأثر الاجتماعي والإسهام'}
+  ],key:'value1'},
+  {section:'القسم 5 — قيم مهنية',text:'هل تفضل العمل موظفاً أم أن تمتلك مشروعاً خاصاً؟',opts:[
+    {em:'🏢',text:'موظف في شركة كبيرة'},
+    {em:'🚀',text:'صاحب مشروع ريادي'},
+    {em:'🔬',text:'باحث أكاديمي'},
+    {em:'🏛️',text:'عمل حكومي'}
+  ],key:'work_type'},
+  {section:'القسم 5 — قيم مهنية',text:'هل أنت مستعد لدراسة سنوات طويلة؟',opts:[
+    {em:'⏳',text:'نعم، سأصبر ما يلزم'},
+    {em:'📅',text:'أفضل 4-5 سنوات كحد أقصى'},
+    {em:'⚡',text:'أريد الدخول للسوق بسرعة'},
+    {em:'📚',text:'التعلم مستمر طوال الحياة'}
+  ],key:'study_dur'},
+  {section:'القسم 6 — أهداف المستقبل',text:'هل تريد العمل في السعودية أم دولياً؟',opts:[
+    {em:'🇸🇦',text:'داخل المملكة فقط'},
+    {em:'🌍',text:'خارج المملكة وسفر'},
+    {em:'🌐',text:'كلاهما مع الحفاظ على هويتي'},
+    {em:'💼',text:'لم أقرر بعد'}
+  ],key:'location'},
+  {section:'القسم 6 — أهداف المستقبل',text:'هل تستمتع بالتعلم المستمر والمتابعة الدائمة؟',opts:[
+    {em:'🔥',text:'نعم! أشتاق دائماً للتعلم'},
+    {em:'📆',text:'أتعلم ما أحتاجه فقط'},
+    {em:'🎯',text:'أُركز على التخصص العميق'},
+    {em:'🔄',text:'أُحب التنوع والتغيير'}
+  ],key:'learning'},
+  {section:'القسم 6 — أهداف المستقبل',text:'أي القطاعات تستهويك أكثر؟',opts:[
+    {em:'🏥',text:'الصحة والطب'},
+    {em:'💻',text:'التقنية والذكاء الاصطناعي'},
+    {em:'🏗️',text:'البناء والهندسة'},
+    {em:'💼',text:'المال والأعمال'}
+  ],key:'sector'},
+  {section:'القسم 6 — أهداف المستقبل',text:'ما هو حلمك المهني؟',opts:[
+    {em:'👨‍⚕️',text:'أن أُحدث فارقاً في حياة الناس'},
+    {em:'🚀',text:'أن أبني شيئاً يُغير العالم'},
+    {em:'🏆',text:'أن أكون قائداً في مجالي'},
+    {em:'🌱',text:'أن أُسهم في بناء وطني'}
+  ],key:'dream'}
+];
+
+// ======= MAJOR DATABASE =======
+const MAJORS_DB = {
+  cs:[{
+    name:'علوم الحاسب',cat:'تقنية المعلومات',match:0,icon:'💻',traits:{T:5,A:3,C:1,M:1},
+    why:'تجمع بين التحليل المنطقي والبرمجة التي تُظهر ميلاً قوياً نحوها',
+    strengths:['التفكير المنطقي','حل المشكلات','الإبداع التقني'],
+    improve:['مهارات التواصل','إدارة المشاريع'],
+    difficulty:'متوسط إلى عالٍ',duration:'4 سنوات',demand:'🔥 مرتفع جداً',
+    salary:'15,000 – 45,000 ريال',growth:'ممتاز',
+    careers:['مطور برمجيات','مهندس ذكاء اصطناعي','محلل بيانات'],
+    tags:['رؤية 2030','طلب عالٍ','راتب ممتاز'],
+    unis:[
+      {name:'جامعة الملك سعود',short:'KSU',city:'الرياض',gender:'both',qudurat:78,tahsili:78,tuition:'مجاني',url:'https://www.ksu.edu.sa'},
+      {name:'جامعة الأميرة نورة',short:'PNU',city:'الرياض',gender:'female',qudurat:70,tahsili:70,tuition:'مجاني',url:'https://www.pnu.edu.sa'},
+      {name:'جامعة الملك فهد للبترول والمعادن',short:'KFUPM',city:'الدمام',gender:'both',qudurat:85,tahsili:85,tuition:'شبه مجاني',url:'https://www.kfupm.edu.sa'},
+      {name:'جامعة الملك عبدالله للعلوم والتقنية',short:'KAUST',city:'جدة',gender:'both',qudurat:90,tahsili:90,tuition:'مجاني (دراسات عليا)',url:'https://www.kaust.edu.sa'},
+      {name:'جامعة الملك عبدالعزيز',short:'KAU',city:'جدة',gender:'both',qudurat:75,tahsili:75,tuition:'مجاني',url:'https://www.kau.edu.sa'},
+      {name:'جامعة الملك خالد',short:'KKU',city:'أبها',gender:'both',qudurat:65,tahsili:65,tuition:'مجاني',url:'https://www.kku.edu.sa'},
+    ]
+  },{
+    name:'الذكاء الاصطناعي',cat:'تقنية المعلومات',match:0,icon:'🤖',traits:{T:4,A:4,S:1,M:2},
+    why:'مجال المستقبل يتوافق مع اهتمامك بالتقنية وحب التعلم والابتكار',
+    strengths:['الرياضيات','التفكير التجريدي','الشغف بالتقنية'],
+    improve:['برمجة Python','إحصاء متقدم'],
+    difficulty:'عالٍ',duration:'4 سنوات',demand:'🚀 الأعلى طلباً',
+    salary:'20,000 – 60,000 ريال',growth:'ممتاز جداً',
+    careers:['مهندس تعلم آلي','باحث AI','مصمم نماذج'],
+    tags:['رؤية 2030','مستقبلي','عالمي'],
+    unis:[
+      {name:'جامعة الملك سعود',short:'KSU',city:'الرياض',gender:'both',qudurat:80,tahsili:80,tuition:'مجاني',url:'https://www.ksu.edu.sa'},
+      {name:'جامعة الأميرة نورة',short:'PNU',city:'الرياض',gender:'female',qudurat:75,tahsili:75,tuition:'مجاني',url:'https://www.pnu.edu.sa'},
+      {name:'جامعة الفيصل',short:'Alfaisal',city:'الرياض',gender:'both',qudurat:78,tahsili:78,tuition:'خاص — منح متاحة',url:'https://www.alfaisal.edu'},
+      {name:'جامعة الملك فهد للبترول والمعادن',short:'KFUPM',city:'الدمام',gender:'both',qudurat:86,tahsili:86,tuition:'شبه مجاني',url:'https://www.kfupm.edu.sa'},
+      {name:'جامعة الملك عبدالله للعلوم والتقنية',short:'KAUST',city:'جدة',gender:'both',qudurat:92,tahsili:92,tuition:'مجاني',url:'https://www.kaust.edu.sa'},
+    ]
+  },{
+    name:'الأمن السيبراني',cat:'تقنية المعلومات',match:0,icon:'🔐',traits:{T:4,A:3,L:1},
+    why:'حماية الأنظمة الرقمية مجال نمو سريع مع رواتب مرتفعة جداً',
+    strengths:['التحقيق والتحليل','الدقة','التركيز'],
+    improve:['الشبكات','البرمجة'],
+    difficulty:'متوسط إلى عالٍ',duration:'4 سنوات',demand:'🔥 مرتفع جداً',
+    salary:'18,000 – 50,000 ريال',growth:'ممتاز',
+    careers:['محلل أمن','اختبار اختراق','مدير أمن معلومات'],
+    tags:['أمن الدولة','طلب عالٍ'],
+    unis:[
+      {name:'جامعة الأمير سلطان',short:'PSU',city:'الرياض',gender:'both',qudurat:70,tahsili:70,tuition:'30,000 ريال/سنة',url:'https://www.psu.edu.sa'},
+      {name:'جامعة الملك سعود',short:'KSU',city:'الرياض',gender:'both',qudurat:78,tahsili:78,tuition:'مجاني',url:'https://www.ksu.edu.sa'},
+      {name:'جامعة الإمام عبدالرحمن بن فيصل',short:'IAU',city:'الدمام',gender:'both',qudurat:72,tahsili:72,tuition:'مجاني',url:'https://www.iau.edu.sa'},
+      {name:'جامعة الملك فهد للبترول والمعادن',short:'KFUPM',city:'الدمام',gender:'male',qudurat:84,tahsili:84,tuition:'شبه مجاني',url:'https://www.kfupm.edu.sa'},
+      {name:'جامعة الملك عبدالعزيز',short:'KAU',city:'جدة',gender:'both',qudurat:74,tahsili:74,tuition:'مجاني',url:'https://www.kau.edu.sa'},
+    ]
+  }],
+  engineering:[{
+    name:'هندسة البرمجيات',cat:'هندسة',match:0,icon:'⚙️',traits:{T:4,A:3,B:1,L:1},
+    why:'تجمع بين الهندسة والبرمجة لبناء أنظمة وتطبيقات واسعة النطاق',
+    strengths:['الرياضيات','التخطيط','البرمجة'],
+    improve:['إدارة المشاريع','التصميم'],
+    difficulty:'عالٍ',duration:'4-5 سنوات',demand:'🔥 مرتفع',
+    salary:'15,000 – 40,000 ريال',growth:'ممتاز',
+    careers:['مهندس برمجيات','مهندس DevOps','مهندس أنظمة'],
+    tags:['رؤية 2030','تقني'],
+    unis:[
+      {name:'جامعة الملك سعود',short:'KSU',city:'الرياض',gender:'both',qudurat:80,tahsili:80,tuition:'مجاني',url:'https://www.ksu.edu.sa'},
+      {name:'جامعة الأميرة نورة',short:'PNU',city:'الرياض',gender:'female',qudurat:75,tahsili:75,tuition:'مجاني',url:'https://www.pnu.edu.sa'},
+      {name:'جامعة الملك فهد للبترول والمعادن',short:'KFUPM',city:'الدمام',gender:'male',qudurat:87,tahsili:87,tuition:'شبه مجاني',url:'https://www.kfupm.edu.sa'},
+      {name:'جامعة الملك عبدالعزيز',short:'KAU',city:'جدة',gender:'both',qudurat:76,tahsili:76,tuition:'مجاني',url:'https://www.kau.edu.sa'},
+      {name:'جامعة الملك خالد',short:'KKU',city:'أبها',gender:'both',qudurat:68,tahsili:68,tuition:'مجاني',url:'https://www.kku.edu.sa'},
+    ]
+  },{
+    name:'الهندسة الطبية الحيوية',cat:'هندسة',match:0,icon:'🏥',traits:{T:2,S:4,A:2,C:1},
+    why:'تجمع طبك والهندسة للابتكار في الأجهزة الطبية والتقنيات الصحية',
+    strengths:['العلوم','الهندسة','الإبداع'],
+    improve:['الأحياء','الكيمياء'],
+    difficulty:'عالٍ جداً',duration:'5 سنوات',demand:'📈 متنامٍ',
+    salary:'14,000 – 35,000 ريال',growth:'جيد',
+    careers:['مهندس أجهزة طبية','باحث تقنيات صحة','مصمم أطراف اصطناعية'],
+    tags:['صحة المملكة','ابتكار'],
+    unis:[
+      {name:'جامعة الملك سعود',short:'KSU',city:'الرياض',gender:'both',qudurat:82,tahsili:82,tuition:'مجاني',url:'https://www.ksu.edu.sa'},
+      {name:'جامعة الملك عبدالعزيز',short:'KAU',city:'جدة',gender:'both',qudurat:80,tahsili:80,tuition:'مجاني',url:'https://www.kau.edu.sa'},
+      {name:'جامعة الملك فهد للبترول والمعادن',short:'KFUPM',city:'الدمام',gender:'male',qudurat:83,tahsili:83,tuition:'شبه مجاني',url:'https://www.kfupm.edu.sa'},
+      {name:'جامعة طيبة',short:'TU',city:'المدينة المنورة',gender:'both',qudurat:68,tahsili:68,tuition:'مجاني',url:'https://www.taibahu.edu.sa'},
+    ]
+  }],
+  health:[{
+    name:'الطب البشري',cat:'صحة',match:0,icon:'👨‍⚕️',traits:{S:5,P:3,A:1,M:1},
+    why:'تُظهر إجاباتك توجهاً عالياً نحو مساعدة الناس والعلوم البيولوجية',
+    strengths:['العلوم البيولوجية','الصبر','التحليل'],
+    improve:['إدارة الضغط','مهارات التواصل'],
+    difficulty:'عالٍ جداً',duration:'6-7 سنوات',demand:'🏥 ثابت وعالٍ',
+    salary:'20,000 – 80,000+ ريال',growth:'ممتاز',
+    careers:['طبيب عام','طبيب متخصص','جراح'],
+    tags:['نبيل','مضمون','رؤية 2030'],
+    unis:[
+      {name:'كلية الطب جامعة الملك سعود',short:'KSU Med',city:'الرياض',gender:'both',qudurat:90,tahsili:95,tuition:'مجاني',url:'https://www.ksu.edu.sa'},
+      {name:'جامعة الأميرة نورة',short:'PNU',city:'الرياض',gender:'female',qudurat:88,tahsili:92,tuition:'مجاني',url:'https://www.pnu.edu.sa'},
+      {name:'جامعة الملك عبدالعزيز',short:'KAU',city:'جدة',gender:'both',qudurat:88,tahsili:92,tuition:'مجاني',url:'https://www.kau.edu.sa'},
+      {name:'جامعة الإمام عبدالرحمن بن فيصل',short:'IAU',city:'الدمام',gender:'both',qudurat:86,tahsili:90,tuition:'مجاني',url:'https://www.iau.edu.sa'},
+      {name:'جامعة الملك فيصل',short:'KFU',city:'الأحساء',gender:'both',qudurat:84,tahsili:88,tuition:'مجاني',url:'https://www.kfu.edu.sa'},
+      {name:'جامعة طيبة',short:'TU',city:'المدينة المنورة',gender:'both',qudurat:82,tahsili:86,tuition:'مجاني',url:'https://www.taibahu.edu.sa'},
+      {name:'جامعة الملك خالد',short:'KKU',city:'أبها',gender:'both',qudurat:80,tahsili:85,tuition:'مجاني',url:'https://www.kku.edu.sa'},
+    ]
+  },{
+    name:'الصيدلة',cat:'صحة',match:0,icon:'💊',traits:{S:4,A:2,P:1},
+    why:'تجمع الكيمياء والرعاية الصحية مع مرونة في مسارات العمل',
+    strengths:['الكيمياء','الدقة','مساعدة الناس'],
+    improve:['الأحياء الدقيقة','الفيزياء'],
+    difficulty:'متوسط إلى عالٍ',duration:'5 سنوات',demand:'📈 جيد',
+    salary:'12,000 – 30,000 ريال',growth:'جيد',
+    careers:['صيدلاني سريري','صيدلاني مجتمعي','باحث دوائي'],
+    tags:['متنوع','صحة'],
+    unis:[
+      {name:'جامعة الملك سعود',short:'KSU',city:'الرياض',gender:'both',qudurat:80,tahsili:85,tuition:'مجاني',url:'https://www.ksu.edu.sa'},
+      {name:'جامعة الأميرة نورة',short:'PNU',city:'الرياض',gender:'female',qudurat:78,tahsili:82,tuition:'مجاني',url:'https://www.pnu.edu.sa'},
+      {name:'جامعة الملك عبدالعزيز',short:'KAU',city:'جدة',gender:'both',qudurat:78,tahsili:82,tuition:'مجاني',url:'https://www.kau.edu.sa'},
+      {name:'جامعة الإمام عبدالرحمن بن فيصل',short:'IAU',city:'الدمام',gender:'both',qudurat:76,tahsili:80,tuition:'مجاني',url:'https://www.iau.edu.sa'},
+      {name:'جامعة طيبة',short:'TU',city:'المدينة المنورة',gender:'both',qudurat:72,tahsili:76,tuition:'مجاني',url:'https://www.taibahu.edu.sa'},
+    ]
+  },{
+    name:'التمريض',cat:'صحة',match:0,icon:'👩‍⚕️',traits:{P:4,S:2,W:1},
+    why:'تخصص أساسي وإنساني بطلب مرتفع جداً في المنطقة',
+    strengths:['التواصل','الرعاية','العمل الجماعي'],
+    improve:['العلوم البيولوجية','التحمل البدني'],
+    difficulty:'متوسط',duration:'4 سنوات',demand:'🔥 مرتفع جداً',
+    salary:'8,000 – 22,000 ريال',growth:'جيد',
+    careers:['ممرض عام','ممرض متخصص','مشرف تمريض'],
+    tags:['إنساني','مضمون'],
+    unis:[
+      {name:'جامعة الملك سعود',short:'KSU',city:'الرياض',gender:'both',qudurat:65,tahsili:65,tuition:'مجاني',url:'https://www.ksu.edu.sa'},
+      {name:'جامعة الأميرة نورة',short:'PNU',city:'الرياض',gender:'female',qudurat:62,tahsili:62,tuition:'مجاني',url:'https://www.pnu.edu.sa'},
+      {name:'جامعة الملك عبدالعزيز',short:'KAU',city:'جدة',gender:'both',qudurat:62,tahsili:62,tuition:'مجاني',url:'https://www.kau.edu.sa'},
+      {name:'جامعة الإمام عبدالرحمن بن فيصل',short:'IAU',city:'الدمام',gender:'both',qudurat:60,tahsili:60,tuition:'مجاني',url:'https://www.iau.edu.sa'},
+      {name:'جامعة طيبة',short:'TU',city:'المدينة المنورة',gender:'both',qudurat:58,tahsili:58,tuition:'مجاني',url:'https://www.taibahu.edu.sa'},
+      {name:'جامعة الملك خالد',short:'KKU',city:'أبها',gender:'both',qudurat:58,tahsili:58,tuition:'مجاني',url:'https://www.kku.edu.sa'},
+    ]
+  }],
+  business:[{
+    name:'إدارة الأعمال',cat:'أعمال',match:0,icon:'💼',traits:{B:4,L:3,K:1},
+    why:'يناسب شخصيتك القيادية وميلك للتنظيم وبناء المؤسسات',
+    strengths:['التخطيط','التواصل','القيادة'],
+    improve:['التحليل المالي','التسويق الرقمي'],
+    difficulty:'متوسط',duration:'4 سنوات',demand:'📊 ثابت',
+    salary:'8,000 – 25,000 ريال',growth:'جيد',
+    careers:['مدير أعمال','رجل أعمال','مستشار إداري'],
+    tags:['مرن','رؤية 2030'],
+    unis:[
+      {name:'جامعة الملك سعود',short:'KSU',city:'الرياض',gender:'both',qudurat:70,tahsili:70,tuition:'مجاني',url:'https://www.ksu.edu.sa'},
+      {name:'جامعة الأميرة نورة',short:'PNU',city:'الرياض',gender:'female',qudurat:65,tahsili:65,tuition:'مجاني',url:'https://www.pnu.edu.sa'},
+      {name:'جامعة الملك عبدالعزيز',short:'KAU',city:'جدة',gender:'both',qudurat:68,tahsili:68,tuition:'مجاني',url:'https://www.kau.edu.sa'},
+    ]
+  },{
+    name:'المالية',cat:'أعمال',match:0,icon:'📈',traits:{B:3,A:3,T:1},
+    why:'يجمع التحليل الكمي مع الأعمال، مثالي لمن يحب الأرقام والاستراتيجية',
+    strengths:['الرياضيات','التحليل','الاستراتيجية'],
+    improve:['الاقتصاد','نماذج Excel'],
+    difficulty:'متوسط إلى عالٍ',duration:'4 سنوات',demand:'📈 مرتفع',
+    salary:'12,000 – 40,000 ريال',growth:'ممتاز',
+    careers:['محلل مالي','مصرفي استثماري','مدير محافظ'],
+    tags:['رؤية 2030','مرتفع الدخل'],
+    unis:[
+      {name:'جامعة الملك فهد للبترول والمعادن',short:'KFUPM',city:'الدمام',gender:'male',qudurat:80,tahsili:80,tuition:'شبه مجاني',url:'https://www.kfupm.edu.sa'},
+    ]
+  },{
+    name:'ريادة الأعمال',cat:'أعمال',match:0,icon:'🚀',traits:{B:3,L:2,M:3,C:1},
+    why:'يناسبك إذا كنت تحلم ببناء مشروعك الخاص وتأثيرك في السوق',
+    strengths:['الإبداع','المبادرة','قبول المخاطرة'],
+    improve:['التمويل','التسويق'],
+    difficulty:'متوسط',duration:'4 سنوات',demand:'🔥 محوري لرؤية 2030',
+    salary:'متغير – لا سقف',growth:'ممتاز',
+    careers:['مؤسس شركة','مدير تنفيذي','مستثمر'],
+    tags:['رؤية 2030','لا سقف للدخل'],
+    unis:[
+      {name:'جامعة الملك سعود',short:'KSU',city:'الرياض',gender:'both',qudurat:65,tahsili:65,tuition:'مجاني',url:'https://www.ksu.edu.sa'},
+    ]
+  }],
+  design:[{
+    name:'التصميم الجرافيكي',cat:'فنون وتصميم',match:0,icon:'🎨',traits:{C:5,T:1},
+    why:'تُظهر ميلاً إبداعياً واضحاً وهذا التخصص يُطلق إمكاناتك الفنية',
+    strengths:['الإبداع','الجماليات','التفكير البصري'],
+    improve:['برامج Adobe','التسويق'],
+    difficulty:'متوسط',duration:'4 سنوات',demand:'📱 مرتفع رقمياً',
+    salary:'6,000 – 20,000 ريال',growth:'جيد',
+    careers:['مصمم جرافيك','مدير إبداعي','مصمم هوية بصرية'],
+    tags:['إبداعي','رقمي'],
+    unis:[
+      {name:'جامعة الملك عبدالعزيز',short:'KAU',city:'جدة',gender:'both',qudurat:60,tahsili:60,tuition:'مجاني',url:'https://www.kau.edu.sa'},
+      {name:'جامعة الأميرة نورة',short:'PNU',city:'الرياض',gender:'female',qudurat:58,tahsili:58,tuition:'مجاني',url:'https://www.pnu.edu.sa'},
+    ]
+  }],
+  science:[{
+    name:'علم البيانات',cat:'علوم',match:0,icon:'📊',traits:{T:3,A:4,B:1,S:1},
+    why:'جسر بين الرياضيات والتقنية والأعمال — من أكثر المجالات طلباً',
+    strengths:['الرياضيات','التحليل','الفضول'],
+    improve:['Python','إحصاء','SQL'],
+    difficulty:'متوسط إلى عالٍ',duration:'4 سنوات',demand:'🚀 الأعلى نمواً',
+    salary:'15,000 – 45,000 ريال',growth:'ممتاز جداً',
+    careers:['عالم بيانات','محلل أعمال','مهندس بيانات'],
+    tags:['رؤية 2030','مستقبلي'],
+    unis:[
+      {name:'جامعة الملك عبدالله للعلوم والتقنية',short:'KAUST',city:'جدة',gender:'both',qudurat:90,tahsili:90,tuition:'مجاني',url:'https://www.kaust.edu.sa'},
+    ]
+  }],
+  humanities:[{
+    name:'التاريخ والآثار',cat:'آداب وعلوم إنسانية',match:0,icon:'📜',traits:{P:2,K:2,A:2,C:1},
+    why:'يناسب شغفك بالتاريخ والقراءة والتحليل، ومجال ينمو مع اهتمام المملكة بالسياحة والتراث',
+    strengths:['حب القراءة والاطلاع','التحليل النقدي','سعة الاطلاع'],
+    improve:['البحث الأكاديمي','لغة أجنبية للتنقيب والتوثيق'],
+    difficulty:'متوسط',duration:'4 سنوات',demand:'📈 متنامٍ مع رؤية 2030 والسياحة',
+    salary:'7,000 – 18,000 ريال',growth:'جيد ومتنامٍ',
+    careers:['أخصائي آثار','مرشد سياحي متخصص','باحث في هيئة التراث','أمين متحف'],
+    tags:['رؤية 2030','تراث وسياحة'],
+    unis:[
+      {name:'جامعة الملك سعود',short:'KSU',city:'الرياض',gender:'both',qudurat:60,tahsili:60,tuition:'مجاني',url:'https://www.ksu.edu.sa'},
+      {name:'جامعة أم القرى',short:'UQU',city:'مكة المكرمة',gender:'both',qudurat:58,tahsili:58,tuition:'مجاني',url:'https://uqu.edu.sa'},
+      {name:'جامعة الأميرة نورة',short:'PNU',city:'الرياض',gender:'female',qudurat:58,tahsili:58,tuition:'مجاني',url:'https://www.pnu.edu.sa'},
+    ]
+  },{
+    name:'اللغة العربية وآدابها',cat:'آداب وعلوم إنسانية',match:0,icon:'📖',traits:{K:4,C:2,P:1},
+    why:'مناسب لمن يحب القراءة والكتابة والتعبير اللغوي بعمق',
+    strengths:['الكتابة والتعبير','حفظ وفهم النصوص','التذوق الأدبي'],
+    improve:['النحو والبلاغة المتقدمة','مهارات التدريس'],
+    difficulty:'متوسط',duration:'4 سنوات',demand:'📊 ثابت (تعليم وإعلام)',
+    salary:'7,000 – 16,000 ريال',growth:'مستقر',
+    careers:['معلم لغة عربية','محرر لغوي','مدقق لغوي','إعلامي'],
+    tags:['تعليم','هوية وطنية'],
+    unis:[
+      {name:'جامعة الإمام محمد بن سعود الإسلامية',short:'IMSIU',city:'الرياض',gender:'both',qudurat:55,tahsili:55,tuition:'مجاني',url:'https://www.imamu.edu.sa'},
+      {name:'جامعة أم القرى',short:'UQU',city:'مكة المكرمة',gender:'both',qudurat:55,tahsili:55,tuition:'مجاني',url:'https://uqu.edu.sa'},
+      {name:'جامعة الأميرة نورة',short:'PNU',city:'الرياض',gender:'female',qudurat:55,tahsili:55,tuition:'مجاني',url:'https://www.pnu.edu.sa'},
+    ]
+  },{
+    name:'اللغات والترجمة',cat:'آداب وعلوم إنسانية',match:0,icon:'🌐',traits:{K:4,C:1,M:1},
+    why:'يناسب إتقانك للتواصل وشغفك باللغات والانفتاح على ثقافات جديدة',
+    strengths:['إتقان لغات متعددة','الدقة اللغوية','التواصل بين الثقافات'],
+    improve:['لغة أجنبية ثانية','الترجمة الفورية'],
+    difficulty:'متوسط إلى عالٍ',duration:'4 سنوات',demand:'📈 جيد ومتنامٍ',
+    salary:'8,000 – 25,000 ريال',growth:'جيد',
+    careers:['مترجم فوري','مترجم تحريري','دبلوماسي','منسق علاقات دولية'],
+    tags:['عالمي','رؤية 2030'],
+    unis:[
+      {name:'جامعة الملك سعود',short:'KSU',city:'الرياض',gender:'both',qudurat:70,tahsili:70,tuition:'مجاني',url:'https://www.ksu.edu.sa'},
+      {name:'جامعة الأميرة نورة',short:'PNU',city:'الرياض',gender:'female',qudurat:68,tahsili:68,tuition:'مجاني',url:'https://www.pnu.edu.sa'},
+      {name:'جامعة الملك عبدالعزيز',short:'KAU',city:'جدة',gender:'both',qudurat:68,tahsili:68,tuition:'مجاني',url:'https://www.kau.edu.sa'},
+    ]
+  },{
+    name:'الإعلام والاتصال الرقمي',cat:'آداب وعلوم إنسانية',match:0,icon:'📺',traits:{K:3,C:3,M:1},
+    why:'يناسب حبك للتعبير والإبداع والتواصل مع جمهور واسع',
+    strengths:['التواصل والإقناع','الإبداع في المحتوى','سرعة البديهة'],
+    improve:['التصوير والمونتاج','التسويق الرقمي'],
+    difficulty:'متوسط',duration:'4 سنوات',demand:'🚀 مرتفع رقمياً',
+    salary:'8,000 – 30,000 ريال',growth:'ممتاز',
+    careers:['صانع محتوى','مذيع','مسؤول علاقات عامة','منتج إعلامي'],
+    tags:['رقمي','رؤية 2030'],
+    unis:[
+      {name:'جامعة الملك سعود',short:'KSU',city:'الرياض',gender:'both',qudurat:68,tahsili:68,tuition:'مجاني',url:'https://www.ksu.edu.sa'},
+      {name:'جامعة الأميرة نورة',short:'PNU',city:'الرياض',gender:'female',qudurat:65,tahsili:65,tuition:'مجاني',url:'https://www.pnu.edu.sa'},
+    ]
+  },{
+    name:'علم النفس',cat:'آداب وعلوم إنسانية',match:0,icon:'🧠',traits:{P:4,A:2,K:1},
+    why:'يناسب اهتمامك الحقيقي بفهم الناس ومساعدتهم نفسياً',
+    strengths:['التعاطف','الاستماع الفعّال','التحليل السلوكي'],
+    improve:['الإحصاء النفسي','مناهج البحث'],
+    difficulty:'متوسط إلى عالٍ',duration:'4 سنوات',demand:'📈 متنامٍ بقوة',
+    salary:'8,000 – 22,000 ريال',growth:'ممتاز',
+    careers:['أخصائي نفسي','مستشار أسري','أخصائي موارد بشرية','باحث سلوكي'],
+    tags:['الصحة النفسية','رؤية 2030'],
+    unis:[
+      {name:'جامعة الملك سعود',short:'KSU',city:'الرياض',gender:'both',qudurat:70,tahsili:70,tuition:'مجاني',url:'https://www.ksu.edu.sa'},
+      {name:'جامعة الأميرة نورة',short:'PNU',city:'الرياض',gender:'female',qudurat:68,tahsili:68,tuition:'مجاني',url:'https://www.pnu.edu.sa'},
+      {name:'جامعة الملك عبدالعزيز',short:'KAU',city:'جدة',gender:'both',qudurat:68,tahsili:68,tuition:'مجاني',url:'https://www.kau.edu.sa'},
+    ]
+  },{
+    name:'الشريعة والقانون',cat:'آداب وعلوم إنسانية',match:0,icon:'⚖️',traits:{K:2,L:2,A:2,B:1},
+    why:'يناسب شخصيتك التحليلية وميلك للعدالة والإقناع والنقاش المنطقي',
+    strengths:['التحليل المنطقي','الإقناع','الدقة في القراءة والفهم'],
+    improve:['الصياغة القانونية','مهارات المرافعة'],
+    difficulty:'عالٍ',duration:'4-5 سنوات',demand:'📊 ثابت ومرموق',
+    salary:'10,000 – 35,000 ريال',growth:'جيد جداً',
+    careers:['محامٍ','مستشار قانوني','قاضٍ','باحث شرعي'],
+    tags:['مرموق','رؤية 2030'],
+    unis:[
+      {name:'جامعة الإمام محمد بن سعود الإسلامية',short:'IMSIU',city:'الرياض',gender:'both',qudurat:75,tahsili:75,tuition:'مجاني',url:'https://www.imamu.edu.sa'},
+      {name:'جامعة الملك سعود',short:'KSU',city:'الرياض',gender:'both',qudurat:75,tahsili:75,tuition:'مجاني',url:'https://www.ksu.edu.sa'},
+      {name:'جامعة الأميرة نورة',short:'PNU',city:'الرياض',gender:'female',qudurat:72,tahsili:72,tuition:'مجاني',url:'https://www.pnu.edu.sa'},
+    ]
+  }]
+};
+
+// All majors flattened
+let ALL_MAJORS = [];
+Object.values(MAJORS_DB).forEach(arr=>ALL_MAJORS.push(...arr));
+
+// ======= HELPERS =======
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+  const showNav = id==='screen-results';
+  document.querySelector('.bottom-nav') && (document.querySelector('.bottom-nav').classList.toggle('visible',showNav));
+}
+
+function selectOpt(el,field,val){
+  const group = document.querySelectorAll(`.form-option[data-field="${field}"]`);
+  group.forEach(o=>o.classList.remove('active'));
+  el.classList.add('active');
+  profile[field]=val;
+}
+
+function startAssessment(){
+  profile.name = document.getElementById('p-name').value;
+  profile.age = document.getElementById('p-age').value;
+  profile.grade = document.getElementById('p-grade').value;
+  profile.city = document.getElementById('p-city').value;
+  if(!profile.gender){alert('يرجى اختيار الجنس');return;}
+  if(!profile.track){alert('يرجى اختيار المسار الدراسي');return;}
+  answers = new Array(QUESTIONS.length).fill(null);
+  currentQ = 0;
+  showScreen('screen-assessment');
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const q = QUESTIONS[currentQ];
+  document.getElementById('q-counter').textContent = `السؤال ${currentQ+1} من ${QUESTIONS.length}`;
+  document.getElementById('q-progress').style.width = `${((currentQ+1)/QUESTIONS.length)*100}%`;
+  document.getElementById('q-section-label').textContent = q.section;
+  document.getElementById('q-text').textContent = q.text;
+  const grid = document.getElementById('q-answers');
+  grid.innerHTML = '';
+  q.opts.forEach((opt,i)=>{
+    const div = document.createElement('div');
+    div.className = 'answer-opt' + (answers[currentQ]===i?' selected':'');
+    div.innerHTML = `<span class="opt-em">${opt.em}</span><span>${opt.text}</span>`;
+    div.onclick=()=>selectAnswer(i);
+    grid.appendChild(div);
+  });
+  document.getElementById('btn-prev').style.display = currentQ>0?'block':'none';
+  document.getElementById('btn-next').disabled = answers[currentQ]===null;
+}
+
+function selectAnswer(i){
+  answers[currentQ]=i;
+  document.querySelectorAll('.answer-opt').forEach((el,idx)=>{
+    el.classList.toggle('selected',idx===i);
+  });
+  document.getElementById('btn-next').disabled=false;
+}
+
+function nextQ(){
+  if(answers[currentQ]===null)return;
+  if(currentQ<QUESTIONS.length-1){currentQ++;renderQuestion();}
+  else{runAnalysis();}
+}
+
+function prevQ(){
+  if(currentQ>0){currentQ--;renderQuestion();}
+}
+
+function runAnalysis(){
+  showScreen('screen-analyzing');
+  const msgs=['تحليل شخصيتك...','تقييم مهاراتك...','مطابقة التخصصات...','البحث في الجامعات...','توليد التوصيات...'];
+  let i=0;
+  const iv = setInterval(()=>{
+    if(i<msgs.length){
+      document.getElementById('analyzing-text').textContent=msgs[i];
+      document.getElementById('analyze-bar').style.width=`${(i+1)/msgs.length*100}%`;
+      i++;
+    }else{
+      clearInterval(iv);
+      computeResults();
+    }
+  },700);
+}
+
+// ======= TRAIT ENGINE =======
+// Every answer contributes points to one or more underlying traits.
+// T=تقنية S=علمي/صحي C=إبداع P=اجتماعي/مساعدة B=أعمال A=تحليلي
+// L=قيادة M=طموح K=تواصل W=عمل جماعي
+const ANSWER_TRAITS = [
+  [{C:3},{S:3,A:1},{T:3,A:1},{K:2,C:1}],                     // 0 activity
+  [{A:2,T:2},{S:3},{K:2,P:1},{P:2}],                          // 1 subject
+  [{T:2,C:2},{A:3},{P:3},{T:2,M:1}],                          // 2 project
+  [{L:3,M:2},{L:1},{W:2},{A:1,M:1}],                          // 3 leadership
+  [{A:1},{W:2},{W:2,K:1},{W:1}],                              // 4 teamwork
+  [{C:3},{A:3},{C:1,A:1},{B:2,L:1}],                          // 5 creative_vs_analytical
+  [{A:2,M:2},{B:1},{A:2},{A:1}],                              // 6 problem solving
+  [{A:3,T:2,S:1},{A:1,T:1},{},{}],                            // 7 math skill
+  [{K:3,L:1},{K:2},{P:1,W:1},{K:1}],                          // 8 communication skill
+  [{T:3},{T:2},{T:1},{}],                                     // 9 tech comfort
+  [{B:1},{S:1,P:1},{B:1,S:1},{T:1}],                          // 10 environment
+  [{P:3,S:1},{B:2,P:1},{S:2,A:1},{B:2}],                      // 11 helping people
+  [{T:2,C:1},{B:2,L:1},{T:1,C:1,M:1},{L:3,M:1}],              // 12 role
+  [{B:2},{C:2},{B:1},{P:2}],                                  // 13 values
+  [{B:1},{B:2,L:1,M:2},{S:2,A:2},{B:1}],                      // 14 work type
+  [{S:2,M:1},{},{B:1,T:1},{A:1,M:1}],                         // 15 study duration
+  [{},{M:2},{M:1},{}],                                        // 16 location
+  [{A:1,M:2},{},{A:1},{C:1}],                                 // 17 learning
+  [{S:3},{T:3},{T:2},{B:3}],                                  // 18 sector
+  [{P:2,S:1},{T:2,M:2},{L:2,M:2},{P:1,B:1}]                   // 19 dream
+];
+const TRAIT_KEYS = ['T','S','C','P','B','A','L','M','K','W'];
+// Maximum achievable points per trait (best-case option each question) — used to normalize to 0-100
+const TRAIT_MAX = {};
+TRAIT_KEYS.forEach(k=>{
+  TRAIT_MAX[k] = ANSWER_TRAITS.reduce((sum,q)=>sum+Math.max(0,...q.map(o=>o[k]||0)),0) || 1;
+});
+
+// Map study track chosen in the profile step to the major category it naturally aligns with.
+// This gives a small, transparent, equally-applied nudge — it never subtracts points from
+// students who picked "general" or "other", which is what made earlier versions unfair
+// to undecided students (exactly the students this tool is meant to help most).
+const TRACK_TO_CATEGORY = {
+  engineering:'هندسة', health:'صحة', cs:'تقنية المعلومات', business:'أعمال', humanities:'آداب وعلوم إنسانية'
+};
+
+function computeTraits(){
+  const raw = {}; TRAIT_KEYS.forEach(k=>raw[k]=0);
+  answers.forEach((optIdx,qIdx)=>{
+    if(optIdx===null||optIdx===undefined)return;
+    const contrib = ANSWER_TRAITS[qIdx][optIdx] || {};
+    Object.keys(contrib).forEach(k=>raw[k]+=contrib[k]);
+  });
+  const pct = {};
+  TRAIT_KEYS.forEach(k=>{ pct[k] = Math.round(Math.min(100,(raw[k]/TRAIT_MAX[k])*100)); });
+  return pct;
+}
+
+function computeResults(){
+  // 1) Derive a real, evidence-based trait profile from the student's 20 answers.
+  //    (Previously the "personality" numbers were hardcoded and identical for every
+  //    student — that's the biggest source of "inaccurate" results. Now everything
+  //    below is computed from what the student actually answered.)
+  currentTraits = computeTraits();
+
+  // 2) Score every major as a transparent weighted match against that trait profile.
+  //    No randomness, no flat "bonus" for a chosen track, no gender penalty baked
+  //    into the match score — those were the sources of bias in the old version.
+  ALL_MAJORS.forEach(m=>{
+    const w = m.traits || {};
+    const totalWeight = Object.values(w).reduce((s,v)=>s+v,0) || 1;
+    let weightedSum = 0;
+    Object.keys(w).forEach(k=>{ weightedSum += (currentTraits[k]||0) * w[k]; });
+    let score = weightedSum / totalWeight;
+
+    // Small, equally-applied alignment nudge for a matching study track. Capped low
+    // enough that it can never override what the student's actual answers show.
+    if(TRACK_TO_CATEGORY[profile.track] === m.cat) score += 4;
+
+    m.match = Math.min(98, Math.max(30, Math.round(score)));
+  });
+
+  ALL_MAJORS.sort((a,b)=>b.match-a.match);
+  results = ALL_MAJORS.slice(0,10);
+
+  showResults();
+}
+
+function showResults(){
+  showScreen('screen-results');
+  
+  // Overall score
+  const avg = Math.round(results.slice(0,3).reduce((s,m)=>s+m.match,0)/3);
+  document.getElementById('fit-score-text').textContent = avg+'%';
+  document.getElementById('result-name-h').textContent = profile.name ? `مرحباً ${profile.name}` : 'نتائجك';
+  document.getElementById('profile-summary').textContent = 
+    `${profile.gender==='female'?'طالبة':'طالب'} | المسار: ${getTrackName(profile.track)} | المدينة: ${profile.city||'غير محددة'}`;
+  
+  // Animate score ring
+  setTimeout(()=>{
+    const c = document.getElementById('score-circle');
+    const circ = 327;
+    const off = circ - (avg/100)*circ;
+    c.style.transition='stroke-dashoffset 1.5s ease';
+    c.style.strokeDashoffset = off;
+  },300);
+
+  // Majors list
+  renderMajors();
+  renderPersonality();
+  renderSkills();
+  renderRoadmap();
+  initChat();
+}
+
+function getTrackName(t){
+  const m={general:'عام',engineering:'هندسة',health:'صحة وأحياء',cs:'حاسب',business:'أعمال',humanities:'أدبي ولغات',other:'أخرى'};
+  return m[t]||t;
+}
+
+function renderMajors(){
+  const list = document.getElementById('majors-list');
+  list.innerHTML='';
+  results.forEach((m,i)=>{
+    const rankClass = i===0?'gold':i===1?'silver':i===2?'bronze':'';
+    const filteredUnis = m.unis.filter(u=>
+      u.gender==='both'||(profile.gender==='male'&&u.gender==='male')||(profile.gender==='female'&&u.gender==='female')
+    ).sort((a,b)=>{
+      // Universities in the student's own city are shown first — this is the fix for
+      // students getting a Jeddah university at the top of the list while living in Riyadh.
+      const aNear = profile.city && a.city===profile.city ? 0 : 1;
+      const bNear = profile.city && b.city===profile.city ? 0 : 1;
+      return aNear-bNear;
+    });
+    const card = document.createElement('div');
+    card.className='major-card';
+    card.innerHTML=`
+      <div class="major-top">
+        <div class="major-rank ${rankClass}">${i+1}</div>
+        <div style="font-size:1.8rem;flex-shrink:0">${m.icon}</div>
+        <div class="major-info" style="flex:1">
+          <h3>${m.name}</h3>
+          <span class="major-cat">${m.cat}</span>
+        </div>
+        <div class="match-badge">${m.match}% ✓</div>
+      </div>
+      <div class="match-bar"><div class="match-fill" style="width:${m.match}%"></div></div>
+      <div class="major-tags">
+        ${m.tags.map(t=>`<span class="tag blue">${t}</span>`).join('')}
+        <span class="tag orange">⏱ ${m.duration}</span>
+        <span class="tag green">💰 ${m.salary}</span>
+      </div>
+      <p style="font-size:.88rem;color:var(--text2);line-height:1.6"><strong style="color:var(--primary)">لماذا يناسبك؟</strong> ${m.why}</p>
+      <button class="major-expand" onclick="toggleDetails(this)">عرض التفاصيل الكاملة والجامعات ▼</button>
+      <div class="major-details">
+        <div class="detail-grid">
+          <div class="detail-item"><div class="di-label">مستوى الصعوبة</div><div class="di-val">${m.difficulty}</div></div>
+          <div class="detail-item"><div class="di-label">الطلب في السوق</div><div class="di-val">${m.demand}</div></div>
+          <div class="detail-item"><div class="di-label">النمو الوظيفي</div><div class="di-val">${m.growth}</div></div>
+          <div class="detail-item"><div class="di-label">متوسط الراتب</div><div class="di-val">${m.salary}</div></div>
+        </div>
+        <div style="margin-bottom:.75rem">
+          <div class="di-label" style="margin-bottom:.35rem;font-size:.8rem;color:var(--text3);font-weight:600">المهن المرتبطة</div>
+          <div class="major-tags">${m.careers.map(c=>`<span class="tag">${c}</span>`).join('')}</div>
+        </div>
+        <div style="margin-bottom:.75rem">
+          <div class="di-label" style="margin-bottom:.35rem;font-size:.8rem;color:var(--text3);font-weight:600">نقاط قوتك الداعمة</div>
+          <div class="major-tags">${m.strengths.map(s=>`<span class="tag green">✓ ${s}</span>`).join('')}</div>
+        </div>
+        <div style="margin-bottom:.75rem">
+          <div class="di-label" style="margin-bottom:.35rem;font-size:.8rem;color:var(--text3);font-weight:600">مهارات للتحسين</div>
+          <div class="major-tags">${m.improve.map(s=>`<span class="tag orange">↑ ${s}</span>`).join('')}</div>
+        </div>
+        ${filteredUnis.length>0?`
+        <div>
+          <div class="di-label" style="margin-bottom:.5rem;font-size:.8rem;color:var(--text3);font-weight:600">الجامعات المتاحة${profile.gender==='female'?' للطالبات':' للطلاب'}${profile.city?` — الأقرب إلى ${profile.city} أولاً`:''}</div>
+          <div class="uni-list">
+            ${filteredUnis.map(u=>{
+              const isNear = profile.city && u.city===profile.city;
+              return `
+              <div class="uni-item" style="${isNear?'border-color:var(--primary-light);background:#f0f7ff':''}">
+                <div class="uni-logo">${u.short}</div>
+                <div class="uni-info">
+                  <div class="uni-name">${u.name}${isNear?' <span style="color:var(--success);font-size:.75rem;font-weight:700">📍 في مدينتك</span>':''}</div>
+                  <div class="uni-sub">📍 ${u.city} | رسوم: ${u.tuition}</div>
+                  <div class="uni-sub">قدرات: ${u.qudurat}+ | تحصيلي: ${u.tahsili}+</div>
+                </div>
+                <span class="uni-badge">${u.gender==='both'?'مختلط':profile.gender==='female'?'إناث':'ذكور'}</span>
+              </div>
+            `;}).join('')}
+          </div>
+        </div>
+        `:'<p class="text-muted" style="font-size:.85rem">لا توجد جامعات متاحة مطابقة حالياً</p>'}
+      </div>
+    `;
+    list.appendChild(card);
+  });
+}
+
+function printResults(){
+  if(!results || !results.length){ alert('لا توجد نتائج بعد.'); return; }
+  const win = window.open('', '_blank');
+  if(!win){
+    alert('يبدو أن المتصفح منع فتح نافذة الطباعة. يرجى السماح بالنوافذ المنبثقة لهذه الصفحة والمحاولة مجدداً، أو استخدم اختصار الطباعة Ctrl+P مباشرة.');
+    return;
+  }
+  const name = profile.name ? profile.name : 'الطالب';
+  const t = currentTraits || {};
+  const topTraits = Object.keys(TRAIT_INFO).sort((a,b)=>(t[b]||0)-(t[a]||0)).slice(0,4).map(k=>TRAIT_INFO[k].title).join('، ');
+  const majorsHtml = results.slice(0,10).map((m,i)=>`
+    <div style="margin-bottom:14px;padding:14px 16px;border:1px solid #d5dce6;border-radius:10px;page-break-inside:avoid">
+      <div style="font-weight:700;font-size:16px;color:#1a5276">${i+1}. ${m.icon} ${m.name} <span style="color:#f39c12">— ${m.match}% توافق</span></div>
+      <div style="font-size:12.5px;color:#4a6080;background:#f0f4f8;display:inline-block;padding:2px 10px;border-radius:20px;margin:4px 0">${m.cat}</div>
+      <div style="font-size:13px;color:#4a6080;margin-top:6px;line-height:1.6"><strong>لماذا يناسبك؟</strong> ${m.why}</div>
+      <div style="font-size:12px;color:#8899aa;margin-top:6px">⏱ ${m.duration} &nbsp;|&nbsp; 💰 ${m.salary} &nbsp;|&nbsp; ${m.demand}</div>
+    </div>
+  `).join('');
+  win.document.open();
+  win.document.write(`<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8">
+    <title>نتائج التقييم المهني — ${name}</title>
+    <style>
+      body{font-family:Tahoma,'Segoe UI',sans-serif;padding:32px;color:#1a2332;direction:rtl;max-width:800px;margin:0 auto}
+      h1{color:#1a5276;margin:0 0 4px}
+      .sub{color:#4a6080;margin-bottom:22px;font-size:14px}
+      h2{color:#1a5276;font-size:18px;border-bottom:2px solid #f39c12;padding-bottom:6px;margin-top:28px}
+      @media print{ body{padding:12px} }
+    </style></head>
+    <body>
+      <h1>🧭 نتائج التقييم المهني — منصة رُؤية</h1>
+      <div class="sub">${name} | ${getTrackName(profile.track)} | ${profile.city||'غير محددة'} | أبرز سماتك: ${topTraits}</div>
+      <h2>أفضل التخصصات المقترحة</h2>
+      ${majorsHtml}
+      <p style="font-size:11px;color:#8899aa;margin-top:24px">تم إنشاء هذا التقرير بناءً على إجاباتك الفعلية على 20 سؤالاً — نتيجة كل طالب مختلفة حسب إجاباته.</p>
+    </body></html>`);
+  win.document.close();
+  win.focus();
+  setTimeout(()=>{ win.print(); }, 350);
+}
+
+function toggleDetails(btn){
+  const details = btn.nextElementSibling;
+  details.classList.toggle('open');
+  btn.textContent = details.classList.contains('open') ? 'إخفاء التفاصيل ▲' : 'عرض التفاصيل الكاملة والجامعات ▼';
+}
+
+// Descriptions shown when a trait is among the student's strongest — picked dynamically
+// per student instead of the same four cards for everyone.
+const TRAIT_INFO = {
+  T:{icon:'💻',title:'الميل التقني',desc:'تنجذب للتقنية والحاسب وتتعلم أدواتها الجديدة بسرعة وارتياح'},
+  S:{icon:'🔬',title:'العقلية العلمية',desc:'تستمتع بالعلوم والأحياء والفهم العميق لكيفية عمل الأشياء'},
+  C:{icon:'🎨',title:'الروح الإبداعية',desc:'تفكر بصرياً وتستمتع بالابتكار والتعبير عن أفكارك بطرق جديدة'},
+  P:{icon:'🤝',title:'التوجه الإنساني',desc:'تجد معنى حقيقياً في مساعدة الآخرين والتواصل معهم'},
+  B:{icon:'💼',title:'التفكير الريادي',desc:'تميل للتنظيم واتخاذ القرارات وبناء المشاريع والفرص'},
+  A:{icon:'🧠',title:'المفكر التحليلي',desc:'تميل للتفكير المنهجي وتحليل المعلومات بعمق قبل اتخاذ القرارات'},
+  L:{icon:'🦁',title:'الحس القيادي',desc:'مرتاح في قيادة الآخرين وتحمل مسؤولية القرارات الجماعية'},
+  M:{icon:'🚀',title:'الطموح العالي',desc:'تسعى للتطور المستمر ولا تخشى التحديات الكبيرة والمسارات الطويلة'},
+  K:{icon:'🎤',title:'قوة التواصل',desc:'تُعبّر عن أفكارك بوضوح كتابةً أو حديثاً وتُجيد الإقناع'},
+  W:{icon:'👥',title:'روح الفريق',desc:'تعمل بفعالية ضمن مجموعة وتساهم في نجاح الجهد الجماعي'}
+};
+
+function renderPersonality(){
+  const t = currentTraits || {};
+  // Show the 4 traits with the highest actual scores for this student.
+  const topTraits = Object.keys(TRAIT_INFO)
+    .sort((a,b)=>(t[b]||0)-(t[a]||0))
+    .slice(0,4)
+    .map(k=>TRAIT_INFO[k]);
+
+  document.getElementById('personality-cards').innerHTML = topTraits.map(tr=>`
+    <div class="personality-card">
+      <div class="p-icon">${tr.icon}</div>
+      <div class="p-title">${tr.title}</div>
+      <div class="p-desc">${tr.desc}</div>
+    </div>
+  `).join('');
+
+  // Radar chart — built entirely from this student's own answers.
+  setTimeout(()=>{
+    const ctx = document.getElementById('radarChart');
+    if(!ctx)return;
+    if(ctx._chart) ctx._chart.destroy();
+    ctx._chart = new Chart(ctx,{
+      type:'radar',
+      data:{
+        labels:['الاهتمامات التقنية','الإبداع','الميل للناس','القيادة','الطموح','التحليل'],
+        datasets:[{
+          label:'ملفك',
+          data:[t.T||0,t.C||0,t.P||0,t.L||0,t.M||0,t.A||0],
+          backgroundColor:'rgba(41,128,185,0.15)',
+          borderColor:'#2980b9',
+          pointBackgroundColor:'#2980b9',
+          borderWidth:2
+        }]
+      },
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{r:{min:0,max:100,ticks:{display:false},grid:{color:'rgba(0,0,0,0.07)'},pointLabels:{font:{size:12,family:'IBM Plex Sans Arabic'}}}}}
+    });
+  },300);
+}
+
+function renderSkills(){
+  const t = currentTraits || {};
+  const skills=[
+    {label:'التفكير التحليلي',val:t.A||0},
+    {label:'الإبداع',val:t.C||0},
+    {label:'التواصل',val:t.K||0},
+    {label:'التقنية',val:t.T||0},
+    {label:'القيادة',val:t.L||0},
+    {label:'العمل الجماعي',val:t.W||0},
+  ];
+  document.getElementById('skills-analysis').innerHTML = skills.map(s=>`
+    <div class="skill-bar-row">
+      <div class="sk-label">${s.label}</div>
+      <div class="sk-track"><div class="sk-fill" style="width:${s.val}%"></div></div>
+      <div class="sk-val">${s.val}%</div>
+    </div>
+  `).join('');
+}
+
+function renderRoadmap(){
+  const topMajor = results[0]||{name:'التخصص المختار',duration:'4 سنوات'};
+  const steps=[
+    {title:'المرحلة الثانوية (الآن)',desc:`ركز على التفوق في المواد الأساسية واستعد لاختبارات القدرات والتحصيل. استهدف قدرات ${80}+ وتحصيلي ${80}+`,time:'الآن'},
+    {title:'اختبارات القبول',desc:'اجتز اختبار SAT/قدرات وتحصيلي وسجّل في المنصة الموحدة للقبول (نور) في موعد التسجيل',time:'الصف الثاني عشر'},
+    {title:`سنة التحضير — ${topMajor.name}`,desc:'السنة الأولى: مواد تحضيرية وتأسيسية. استغلها لبناء مهاراتك وبناء علاقاتك الأكاديمية',time:'السنة 1'},
+    {title:'سنوات التخصص',desc:`سنوات 2-${topMajor.duration.split('-')[0]||4}: تعمق في مجالك مع المشاريع والتدريب الصيفي وبناء portfolio قوي`,time:'السنوات 2-4'},
+    {title:'التدريب التعاوني',desc:'لا تفوّت فرص التدريب الميداني في الشركات الكبرى — هي بوابة التوظيف الأولى في السعودية',time:'الصيف'},
+    {title:'التخرج والتوظيف',desc:'انضم لشبكة الخريجين وسجّل في منصة العمل السعودية. استهدف شركات رؤية 2030',time:'السنة 4-5'},
+  ];
+  document.getElementById('roadmap-content').innerHTML=steps.map((s,i)=>`
+    <div class="roadmap-step">
+      <div class="rs-number">${i+1}</div>
+      <div class="rs-content">
+        <h4>${s.title}</h4>
+        <p>${s.desc}</p>
+        <div class="rs-timeline">⏱ ${s.time}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function initChat(){
+  const suggs=[
+    `ما الفرق بين ${results[0]?.name||'التخصص'} و${results[1]?.name||'التخصص الثاني'}؟`,
+    'ما أفضل جامعة في الرياض لتخصصي؟',
+    'كيف أرفع درجاتي في القدرات؟',
+    'ما مستقبل رؤية 2030 في مجالي؟',
+  ];
+  document.getElementById('chat-suggestions').innerHTML=suggs.map(s=>
+    `<div class="chat-sugg" onclick="chatSend('${s}')">${s}</div>`
+  ).join('');
+}
+
+async function sendChat(){
+  const input=document.getElementById('chat-input');
+  const msg=input.value.trim();
+  if(!msg)return;
+  input.value='';
+  chatSend(msg);
+}
+
+async function chatSend(msg){
+  const messages=document.getElementById('chat-messages');
+  messages.innerHTML+=`<div class="msg user">${msg}</div>`;
+  messages.scrollTop=messages.scrollHeight;
+  
+  const thinking=document.createElement('div');
+  thinking.className='msg bot';
+  thinking.innerHTML='<span style="color:var(--text3)">⏳ يفكر المستشار...</span>';
+  messages.appendChild(thinking);
+  messages.scrollTop=messages.scrollHeight;
+
+  const topMajors=results.slice(0,5).map(m=>m.name).join('، ');
+  const t=currentTraits||{};
+  const strongTraits=Object.keys(TRAIT_INFO).sort((a,b)=>(t[b]||0)-(t[a]||0)).slice(0,3).map(k=>TRAIT_INFO[k].title).join('، ');
+  const context=`أنت مستشار تعليمي سعودي متخصص. الطالب ${profile.gender==='female'?'طالبة':'طالب'} في ${getTrackName(profile.track)}، مدينته: ${profile.city||'غير محددة'}. 
+التخصصات الموصى بها له: ${topMajors}. أبرز سماته حسب نتائج التقييم: ${strongTraits}.
+أجب بالعربية بشكل ودي ومفيد لا يتجاوز 3 فقرات، مع إشارات لرؤية 2030 عند الاقتضاء.`;
+
+  try{
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-6',
+        max_tokens:1000,
+        system:context,
+        messages:[{role:'user',content:msg}]
+      })
+    });
+    const data=await resp.json();
+    const reply=data.content?.map(c=>c.text||'').join('')||'عذراً، حدث خطأ ما. حاول مرة أخرى.';
+    thinking.innerHTML=`🤖 ${reply}`;
+  }catch(e){
+    thinking.innerHTML='🤖 عذراً، لم أتمكن من الاتصال. تأكد من الاتصال بالإنترنت وحاول مرة أخرى.';
+  }
+  messages.scrollTop=messages.scrollHeight;
+}
+
+function showTab(id,tabEl){
+  document.querySelectorAll('.tab-content').forEach(t=>t.style.display='none');
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).style.display='block';
+  tabEl.classList.add('active');
+  if(id==='tab-chat') initChat();
+}
+</script>
+</body>
+</html>
